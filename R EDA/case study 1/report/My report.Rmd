@@ -1,0 +1,95 @@
+---
+title: "Gender Gap in Bonus and Pay"
+author: "Lyric"
+date: "25/10/2021"
+output: html_document
+---
+
+```{r setup,include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE)
+```
+
+
+
+```{r, echo=FALSE, include=FALSE}
+library(tidyverse)
+
+pay17 <- read_csv("../data/UK Gender Pay Gap Data - 2017 to 2018.csv")
+
+pay18 <- read_csv("../data/UK Gender Pay Gap Data - 2018 to 2019.csv")
+
+pay19 <- read_csv("../data/UK Gender Pay Gap Data - 2019 to 2020.csv")
+
+pay20 <- read_csv("../data/UK Gender Pay Gap Data - 2020 to 2021.csv")
+
+universities <- read_csv("../data/universities.csv")
+
+pay17 %>%
+  mutate(year = "2017/18") %>%
+  inner_join(universities, by = "EmployerName") %>%
+  select(EmployerName, institution, year, DiffMeanHourlyPercent)  
+
+## Now do this for all four years, store each result, and combine with rbind()
+
+pay17year <- pay17 %>%
+  mutate(year = "2017/18") %>%
+  inner_join(universities, by = "EmployerName")
+
+pay18year <- pay18 %>%
+  mutate(year = "2018/19") %>%
+  inner_join(universities, by = "EmployerName")
+
+pay19year <- pay19 %>%
+  mutate(year = "2019/20") %>%
+  inner_join(universities, by = "EmployerName")
+
+pay20year <- pay20 %>%
+  mutate(year = "2020/21") %>%
+  inner_join(universities, by = "EmployerName")
+
+
+payGapData <- rbind(pay17year, pay18year, pay19year, pay20year)
+
+
+```
+
+## Bar Chart
+
+#### The bar chart illustrates the bonus gap between genders directly.  And there is the code of this bar:
+
+```{r code, fig.align='center',eval=TRUE}
+payGapData  %>%
+  select(EmployerName, MaleBonusPercent, FemaleBonusPercent, year) %>%
+  group_by(year) %>%
+  summarise(meanMaleBonus = mean(MaleBonusPercent),meanFemaleBonus = mean(FemaleBonusPercent))%>%
+  pivot_longer(meanMaleBonus:meanFemaleBonus,
+               names_to = "mean",
+               values_to = "value") %>%
+  ggplot(aes(x = year, y = value)) + 
+  geom_bar(stat = 'identity',aes(fill = mean),position = position_dodge(0.5),width = 0.5) +
+  labs(x = "Mean Bonus between male and female in a year",
+       y = "meanBonusPercent")
+```
+
+
+##### As the bar chart show above, an increment of bonus percent can be seen in recent years.
+
+## Table
+
+#### The table below show the maximun, minimun, difference of max and min, mean, mean in Post-92 and mean in Pre-92 institution in 2020.
+
+
+
+|   2020 proportion(%)  | Maximum  | Minimum  |  Diff  |  Mean | Mean in Post-92 | Mean in pre-92 |
+|:-----------------------:|:--------:|:--------:|:------:|:-----:|:---------------:|:--------------:|
+|     MaleBonusPercent    |   97.10  |   0.00   |  97.10 |  8.98 |       9.13      |      8.76      |
+|    FemaleBonusPercent   |   98.90  |   0.00   |  98.90 |  9.67 |       9.29      |      10.20     |
+|  DiffMeanHourlyPercent  |   28.20  |   3.50   |  24.70 | 14.17 |      11.80      |      17.70     |
+| DiffMedianHourlyPercent |   35.00  |   0.00   |  35.00 | 13.89 |      12.70      |      15.60     |
+|   DiffMeanBonusPercent  |   92.80  |  -81.80  | 174.60 | 28.10 |      11.70      |      48.4      |
+|  DiffMedianBonusPercent |   92.80  |  -91.50  | 184.30 | 15.98 |       7.40      |      26.6      |
+
+##### The table illustrates some meaningful values in divergent part and there are some hints between these values. 
+##### 1. the gender gap of the pay and bonus in pre-92 institution is always greater than that of Post-92 according to the last two colomn.
+##### 2. there are some inavailable data in MaleBonusPercent, FemaleBonusPercent and DiffMedianHourlyPercent cause the minimum in these parts is 0.
+##### 3.the gender gap of the bonus is higher than that of the pay according to the lower four rows.

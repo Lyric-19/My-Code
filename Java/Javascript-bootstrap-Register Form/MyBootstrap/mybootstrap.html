@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>程序创新大会报名表</title>
+		<script type="text/javascript" src="./js/jquery-1.11.1.js" ></script> 
+		<script type="text/javascript" src="./js/bootstrap.js" ></script>
+		<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="./css/bootstrap.css" />
+		<link rel="stylesheet" href="./css/bootstrap-theme.css" /> 
+		<script>
+			function isUserName() {
+				var name = $("#userName").val(); 
+				if (name == null || name == '') { 
+					$("#nameMsg").html("用户名不能为空！").css('color', "red"); 
+					return false; 
+				} 
+				else if (/\w{5,}/.test(name)==false) { 
+						$("#nameMsg").html("用户名长度必须大于6!").css('color', "red"); 
+						return false; 
+					} 
+					$("#nameMsg").html('用户名可用').css('color','green');
+					return true; 
+				} 
+			function isPasswd() { 
+				var password = $('#password').val();  
+				if (password == null || password == '') { 
+					$("#pwdMsg1").html ("密码不能为空！").css('color','red'); 
+					return false;
+				} 
+				else if ( password.length < 8) { 
+					$("#pwdMsg1").innerHTML('密码长度必须大于8！').css('color','red'); 
+					return false; 
+				} 
+				$("#pwdMsg1").html('密码合法').css('color','green'); 
+				return true;
+			} 
+			function confirmPwd(){ 
+				var pwd1 = $("#password").val() ; 
+				var pwd2 = $("#password2").val();  
+				if (pwd2 == null || pwd2 == '') { 
+					$("#pwdMsg2").html("请再次输入密码！").css('color','red');
+					return false; 
+				} 
+				else if (pwd1 != pwd2) {
+					$("#pwdMsg2").html('两次密码不一致，请重新输入密码').css('color','red'); 
+					return false; 
+				} 
+				$("#pwdMsg2").html('两次密码一致').css('color','green');
+				return true; 
+			}
+			function register(){ 
+				if(isUserName() && isPasswd() && confirmPwd()) { 
+					return true; 
+				}else {  
+					window.alert("请检查用户名和密码是否规范"); 
+					return false; 
+				} 
+			}
+			$(function(){
+				$("input[name='userName']").blur(function(){
+					isUserName();
+				});
+				$("input[name='password']").blur(function(){ 
+					isPasswd();
+				});
+					
+				$("input[name='pwd2']").blur(function(){
+					confirmPwd();
+				});
+				$("#myForm").submit(function(){ 
+					return isUserName()&&isPasswd()&&confirmPwd();
+				}); 
+			});	
+			$(function () {
+				$("[data‐toggle='popover']").popover(); 
+			});	
+		</script>
+		<style>
+			.img-thumbnail {
+						  padding: 14px;
+						  border: solid red 1px;
+						}
+			body { 
+				text-align: center;
+				background-image: url(img/2.jpg); 
+				background‐size: 100% 100%; 
+				font‐family: LiSu; 
+				background‐attachment: "fixed";
+			} 
+			.iframe { 
+				margin: initial; 
+			} 
+			h1 {
+				color: rgb(85, 25, 53);
+			} 
+			input {
+				border: none;
+				background‐color: rgba(163, 78, 92, 0.5);
+			} 
+			button, 
+			textarea {
+				border: none; 
+				background‐color: rgba(236, 234, 71, 0.5) !important; 
+			} 
+			input,
+			textarea, 
+			button { 
+				border‐radius: 5px; 
+			} 
+			input, 
+			button { 
+				height: 30px; 
+			} 
+			input:focus,
+			button:focus,
+			textarea:focus { 
+				background‐color: rgb(46, 139, 87, 0.5); 
+			} 
+			.form‐control { 
+				margin‐left: 30%; 
+				display: block; 
+				width: 40%; 
+				height: 34px;
+				line‐height: 1.42857143;
+				color: rgb(20, 18, 18); 
+				border: 1px solid rgb(241, 157, 157, 0.5); 
+				border‐radius: 4px; 
+				‐webkit‐box‐shadow: inset 0 1px 1px rgba(0, 0, 0, .075); 
+				        box‐shadow: inset 0 1px 1px rgba(0, 0, 0, .075); 
+				‐webkit‐transition: border‐color ease‐in‐out .15s, ‐webkit‐box‐shadow e ase‐in‐out .15s;
+				     ‐o‐transition: border‐color ease‐in‐out .15s, box‐shadow ease‐in‐out .15s; 
+					    transition: border‐color ease‐in‐out .15s, box‐shadow ease‐in‐out .15s; 
+			} 
+		</style>
+	</head>
+	<body>
+		<h1><br>程序创新大会报名表</h1> 
+		<div class="iframe"> 
+			<iframe src="编程创新大会报名流程.html" frameborder="0" width="500px" height="80px"></iframe>
+		</div>
+		<form class="form-horizontal" role="form" id="myForm" action="提交成功.html" method="get" onsubmit="return register()"> 
+			<div class="form-group has-warning">
+				<label class="col-sm-5 control-label">用户名:</label>
+				<div class="col-sm-2">
+					<input class="form-control" type="text" id="userName" placeholder="请输入用户名" onblur="isUserName()"/>
+					<div id="nameMsg">用户名长度至少6位</div>
+				</div>
+			</div> 
+			<div class="form-group has-warning">
+				<label class="col-sm-5 control-label">密码:</label>
+				<div class="col-sm-2">
+					<input class="form-control" type="password" id="password" placeholder="请输入密码" onblur="isPasswd()"/>
+					<div id="pwdMsg1">密码长度至少8位</div>
+				</div>
+			</div>
+			<div class="form-group has-warning">
+				<label class="col-sm-5 control-label">密码：</label>
+				<div class="col-sm-2">
+					<input class="form-control" type="password" id="password" placeholder="请输入密码" onblur="isPasswd()" /> 
+					<div id="pwdMsg1">密码长度至少8位</div> 
+				</div>
+			</div>
+			<div class="form-group has-warning">
+				<label class="col-sm-5 control-label">确认密码：</label>
+				<div class="col-sm-2">
+					<input class="form-control" type="password" id="password2" placeholder="再次请输入密码" onblur="confirmPwd()" /> 
+					<div id="pwdMsg2">确认密码与密码一致</div> 
+				</div>
+			</div>
+			<div class="form-group has-warning">
+				<label class="col-sm-5 control-label">院校：</label>
+				<div class="col-sm-2">
+					<input class="form-control" type="text" id="school" placeholder="请输入学校" /> 
+				</div>
+			</div>
+			<div class="form-group has-warning">
+				<label class="col-sm-5 control-label">专业：</label>
+				<div class="col-sm-2">
+					<input class="form-control" type="text" id="majoration" placeholder="请输入专业" />
+				</div>
+			</div>
+			
+			<div class="form-group has-warning">
+				<label class="col-sm-5 control-label">请选择年级</label>
+				<div class="col-sm-2">
+					<select class="form-control">
+						<option value="大一">大一</option>
+						<option value="大二">大二</option> 
+						<option value="大三">大三</option> 
+						<option value="大四">大四</option> 
+					</select>
+				</div>
+			</div>
+			<div class="form-group has-warning">
+				<label class="col-sm-5 control-label">联系电话：</label>
+				<div class="col-sm-2">
+					<input class="form-control" type="text" id="phoneMsg" placeholder="请输入联系电话"/>
+				</div>
+			</div>
+			<div class="form-group has-warning">
+				<label class="col-sm-5 control-label">邮箱：</label>
+				<div class="col-sm-2">
+					<input class="form-control" type="email" id="email" placeholder="请输入邮箱"/>
+				</div>
+			</div>
+			<div class="form-group has-warning">
+				<label class="col-sm-5 control-label">程序简述：</label>
+				<div class="col-sm-5">
+					<textarea class="form-control" rows="3" placeholder="请简略描述程序功能"></textarea> 
+				</div>
+			</div>
+			<br> 
+				<button class="col-sm-offset-0" type="submit" class="btn">提交报名表</button>
+				<button class="col-sm-offset-1" type="reset" class="btn btn‐primary" data‐container="body" data‐toggle="popover" data‐placement="top" 
+					data‐content="落子无悔，重置完毕">重置</button>
+		</form> 
+	</body> 			
+	
+</html>
